@@ -30,9 +30,11 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import eu.tutorials.whopays.presentation.screen.slotmachine.SlotMachineAction
 import eu.tutorials.whopays.presentation.screen.slotmachine.SlotMachineState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun SlotMachineBox(
@@ -40,9 +42,7 @@ fun SlotMachineBox(
     numbers: ImmutableList<String>,
     operators: ImmutableList<String>,
     modifier: Modifier = Modifier,
-    onNumber1Change: (String) -> Unit = {},
-    onOperatorChange: (String) -> Unit = {},
-    onNumber2Change: (String) -> Unit = {},
+    onAction: (SlotMachineAction) -> Unit = {},
 ) {
     val infiniteTransition = rememberInfiniteTransition("electric")
     val offset by infiniteTransition.animateFloat(
@@ -93,21 +93,21 @@ fun SlotMachineBox(
                     items = numbers,
                     isSpinning = uiState.isSpinning,
                     modifier = Modifier.weight(1f),
-                    onCurrentValue = onNumber1Change
+                    onCurrentValue = { onAction(SlotMachineAction.updateNumberOne(it)) }
                 )
 
                 SlotReel(
                     items = operators,
                     isSpinning = uiState.isSpinning,
                     modifier = Modifier.weight(1f),
-                    onCurrentValue = onOperatorChange
+                    onCurrentValue = { onAction(SlotMachineAction.updateOperator(it)) }
                 )
 
                 SlotReel(
-                    items = numbers.reversed(),
+                    items = numbers.reversed().toPersistentList(),
                     isSpinning = uiState.isSpinning,
                     modifier = Modifier.weight(1f),
-                    onCurrentValue = onNumber2Change
+                    onCurrentValue = { onAction(SlotMachineAction.updateNumberTwo(it)) }
                 )
             }
         }

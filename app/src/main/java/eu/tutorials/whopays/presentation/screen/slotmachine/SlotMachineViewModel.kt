@@ -3,6 +3,7 @@ package eu.tutorials.whopays.presentation.screen.slotmachine
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import eu.tutorials.whopays.data.model.SlotResult
+import eu.tutorials.whopays.presentation.screen.slotmachine.SlotMachineEffect.*
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,7 +25,10 @@ class SlotMachineViewModel(round: Int) : ViewModel() {
         when (action) {
             SlotMachineAction.OnSpinClick -> startSpinning()
             SlotMachineAction.OnStopClick -> stopSpinning()
-            is SlotMachineAction.OnResultClick -> emitEffect(SlotMachineEffect.NavigationToResult(action.history))
+            is SlotMachineAction.OnResultClick -> emitEffect(NavigationToResult(action.history))
+            is SlotMachineAction.updateNumberOne -> updateNumberOne(action.number)
+            is SlotMachineAction.updateNumberTwo -> updateNumberTwo(action.number)
+            is SlotMachineAction.updateOperator -> updateOperator(action.operator)
         }
     }
 
@@ -42,6 +46,24 @@ class SlotMachineViewModel(round: Int) : ViewModel() {
         viewModelScope.launch {
             delay(100)
             generateSlotResult()
+        }
+    }
+
+    private fun updateNumberOne(number: String) {
+        _uiState.update {
+            it.copy(number1 = number)
+        }
+    }
+
+    private fun updateNumberTwo(number: String) {
+        _uiState.update {
+            it.copy(number2 = number)
+        }
+    }
+
+    private fun updateOperator(operator: String) {
+        _uiState.update {
+            it.copy(operator = operator)
         }
     }
 

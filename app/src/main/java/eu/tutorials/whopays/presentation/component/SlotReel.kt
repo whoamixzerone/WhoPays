@@ -28,6 +28,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -35,7 +37,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SlotReel(
-    items: List<String>,
+    items: ImmutableList<String>,
     modifier: Modifier = Modifier,
     isSpinning: Boolean = false,
     onCurrentValue: (String) -> Unit = {},
@@ -126,8 +128,8 @@ fun SlotReel(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun SlotReelPreview() {
-    val items = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
-    val operations = listOf("+", "-", "*")
+    val items = persistentListOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
+    val operations = persistentListOf("+", "-", "*")
 
     Row {
         SlotReel(

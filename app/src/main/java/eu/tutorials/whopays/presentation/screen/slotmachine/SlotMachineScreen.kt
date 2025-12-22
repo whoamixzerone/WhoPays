@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import eu.tutorials.whopays.data.model.SlotResult
 import eu.tutorials.whopays.presentation.component.RoundIndicator
 import eu.tutorials.whopays.presentation.component.SlotMachineBox
 import eu.tutorials.whopays.presentation.component.SpinButton
@@ -33,10 +32,6 @@ fun SlotMachineScreen(
     numbers: ImmutableList<String>,
     operators: ImmutableList<String>,
     modifier: Modifier = Modifier,
-    onNumber1Change: (String) -> Unit = {},
-    onOperatorChange: (String) -> Unit = {},
-    onNumber2Change: (String) -> Unit = {},
-    onNavigateScoreBoard: (List<SlotResult>) -> Unit = {},
     onAction: (SlotMachineAction) -> Unit = {}
 ) {
     Box(
@@ -56,25 +51,23 @@ fun SlotMachineScreen(
                 currentRound = if (uiState.round >= uiState.totalRound) uiState.totalRound else uiState.round,
                 totalRounds = uiState.totalRound
             )
-            Spacer(Modifier.height(10.dp))
 
+            Spacer(Modifier.height(10.dp))
             SlotMachineBox(
                 uiState = uiState,
                 numbers = numbers,
                 operators = operators,
-                onNumber1Change = onNumber1Change,
-                onOperatorChange = onOperatorChange,
-                onNumber2Change = onNumber2Change
+                onAction = onAction
             )
-            Spacer(Modifier.height(40.dp))
 
+            Spacer(Modifier.height(40.dp))
             SpinButton(
                 isSpinning = uiState.isSpinning,
                 isEnabled = uiState.round <= uiState.totalRound,
                 onAction = onAction
             )
-            Spacer(Modifier.height(30.dp))
 
+            Spacer(Modifier.height(30.dp))
             Button(
                 onClick = { onAction(SlotMachineAction.OnResultClick(uiState.history)) },
                 modifier = modifier
@@ -87,7 +80,7 @@ fun SlotMachineScreen(
                 enabled = uiState.round > uiState.totalRound
             ) {
                 Text(
-                    text = "결과 보기",
+                    text = "🎮 결과 보기",
                     fontSize = 18.sp,
                     color = Color.White
                 )

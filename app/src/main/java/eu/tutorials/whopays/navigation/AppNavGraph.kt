@@ -25,7 +25,9 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
         entryProvider = entryProvider {
             entry<Route.Round> {
                 RoundRoute(onNavigateToSlotMachine = { round ->
-                    backStack.clear()
+                    backStack.removeIf { navKey ->
+                        navKey is Route.SlotMachine
+                    }
                     backStack.add(Route.SlotMachine(round))
                 })
             }
@@ -34,7 +36,7 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                     round = key.round,
                     onNavigateToResult = { history ->
                         backStack.removeIf { navKey ->
-                            navKey is Route.ScoreBoard
+                            navKey is Route.SlotMachine
                         }
                         backStack.add(Route.ScoreBoard(history))
                     }
