@@ -8,11 +8,12 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import eu.tutorials.whopays.presentation.screen.round.RoundRoute
+import eu.tutorials.whopays.presentation.screen.scoreboard.ScoreBoardRoute
 import eu.tutorials.whopays.presentation.screen.slotmachine.SlotMachineRoute
 
 @Composable
 fun AppNavGraph(modifier: Modifier = Modifier) {
-    val topLevelBackStack = rememberNavBackStack(Route.Round)
+    val backStack = rememberNavBackStack(Route.Round)
 
     NavDisplay(
         modifier = modifier,
@@ -20,16 +21,27 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator()
         ),
-        backStack = topLevelBackStack,
+        backStack = backStack,
         entryProvider = entryProvider {
             entry<Route.Round> {
                 RoundRoute(onNavigateToSlotMachine = { round ->
-                    topLevelBackStack.clear()
-                    topLevelBackStack.add(Route.SlotMachine(round))
+                    backStack.clear()
+                    backStack.add(Route.SlotMachine(round))
                 })
             }
             entry<Route.SlotMachine> { key ->
-                SlotMachineRoute(key.round)
+                SlotMachineRoute(
+                    round = key.round,
+                    onNavigateToResult = { history ->
+                        backStack.removeIf { navKey ->
+                            navKey is Route.ScoreBoard
+                        }
+                        backStack.add(Route.ScoreBoard(history))
+                    }
+                )
+            }
+            entry<Route.ScoreBoard> { key ->
+                ScoreBoardRoute(key.history)
             }
         }
     )

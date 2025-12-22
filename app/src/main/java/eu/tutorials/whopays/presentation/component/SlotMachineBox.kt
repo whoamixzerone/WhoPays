@@ -7,11 +7,10 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -30,17 +29,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import eu.tutorials.whopays.data.model.SlotState
+import androidx.compose.ui.zIndex
+import eu.tutorials.whopays.presentation.screen.slotmachine.SlotMachineState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun SlotMachineBox(
-    slotState: SlotState,
-    numbers: List<String>,
-    operators: List<String>,
+    uiState: SlotMachineState,
+    numbers: ImmutableList<String>,
+    operators: ImmutableList<String>,
     modifier: Modifier = Modifier,
     onNumber1Change: (String) -> Unit = {},
     onOperatorChange: (String) -> Unit = {},
-    onNumber2Change: (String) -> Unit = {}
+    onNumber2Change: (String) -> Unit = {},
 ) {
     val infiniteTransition = rememberInfiniteTransition("electric")
     val offset by infiniteTransition.animateFloat(
@@ -68,9 +70,13 @@ fun SlotMachineBox(
         )
     }
 
-    Box {
+    Box(
+        modifier = modifier
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .onSizeChanged { boxSize = it }
                 .border(width = 4.dp, shape = RoundedCornerShape(16.dp), brush = brush)
@@ -79,44 +85,61 @@ fun SlotMachineBox(
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                SlotReel(items = numbers, isSpinning = slotState.isSpinning, onCurrentValue = onNumber1Change)
-                Spacer(Modifier.weight(1f))
+                SlotReel(
+                    items = numbers,
+                    isSpinning = uiState.isSpinning,
+                    modifier = Modifier.weight(1f),
+                    onCurrentValue = onNumber1Change
+                )
 
-                SlotReel(items = operators, isSpinning = slotState.isSpinning, onCurrentValue = onOperatorChange)
-                Spacer(Modifier.weight(1f))
+                SlotReel(
+                    items = operators,
+                    isSpinning = uiState.isSpinning,
+                    modifier = Modifier.weight(1f),
+                    onCurrentValue = onOperatorChange
+                )
 
-                SlotReel(items = numbers.reversed(), isSpinning = slotState.isSpinning, onCurrentValue = onNumber2Change)
+                SlotReel(
+                    items = numbers.reversed(),
+                    isSpinning = uiState.isSpinning,
+                    modifier = Modifier.weight(1f),
+                    onCurrentValue = onNumber2Change
+                )
             }
-
-            Text(
-                text = "🎰",
-                fontSize = 36.sp,
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .offset(y = (-22).dp)
-            )
-            Text(
-                text = "💎",
-                fontSize = 36.sp,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .offset(y = 22.dp)
-            )
         }
+
+        Text(
+            text = "🎰",
+            fontSize = 32.sp,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 4.dp)
+                .zIndex(1f)
+        )
+        Text(
+            text = "💎",
+            fontSize = 32.sp,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 4.dp)
+                .zIndex(1f)
+        )
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun SlotMachineBoxPreview() {
-    val numbers = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
-    val operators = listOf("+", "-", "*")
+    val numbers = persistentListOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
+    val operators = persistentListOf("+", "-", "*")
 
     SlotMachineBox(
-        slotState = SlotState(
+        uiState = SlotMachineState(
+            totalRound = 2,
             number1 = "5",
             operator = "+",
             number2 = "3",

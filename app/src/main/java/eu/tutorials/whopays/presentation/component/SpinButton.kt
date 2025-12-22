@@ -30,7 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import eu.tutorials.whopays.data.model.SlotState
+import eu.tutorials.whopays.presentation.screen.slotmachine.SlotMachineAction
 import kotlinx.coroutines.delay
 
 @Composable
@@ -38,8 +38,7 @@ fun SpinButton(
     modifier: Modifier = Modifier,
     isSpinning: Boolean = false,
     isEnabled: Boolean = false,
-    onSpinClick: () -> Unit = {},
-    onStopClick: () -> Unit = {}
+    onAction: (SlotMachineAction) -> Unit = {}
 ) {
     var buttonPressed by remember { mutableStateOf(false) }
 
@@ -64,10 +63,10 @@ fun SpinButton(
     Button(
         onClick = {
             if (!isSpinning) {
-                onSpinClick()
+                onAction(SlotMachineAction.OnSpinClick)
                 buttonPressed = true
             } else {
-                onStopClick()
+                onAction(SlotMachineAction.OnStopClick)
             }
         },
         modifier = modifier
@@ -92,7 +91,7 @@ fun SpinButton(
         ) {
             Text(
                 text = if (isSpinning) "STOP" else "SPIN",
-                fontSize = 28.sp,
+                fontSize = 24.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold
             )
@@ -109,6 +108,6 @@ fun SpinButton(
 @Composable
 private fun SpinButtonPreview() {
     SpinButton(
-        isSpinning = SlotState().isSpinning
+        isSpinning = false
     )
 }

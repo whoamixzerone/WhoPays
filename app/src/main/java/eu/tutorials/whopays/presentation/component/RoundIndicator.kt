@@ -21,7 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun RoundIndicator(currentRound: Int, totalRounds: Int, modifier: Modifier = Modifier) {
+fun RoundIndicator(
+    currentRound: Int,
+    totalRounds: Int,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier
             .background(
@@ -45,7 +49,7 @@ fun RoundIndicator(currentRound: Int, totalRounds: Int, modifier: Modifier = Mod
         Spacer(Modifier.width(8.dp))
         Text(
             text = "Round $currentRound / $totalRounds",
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFFFDE047)
         )

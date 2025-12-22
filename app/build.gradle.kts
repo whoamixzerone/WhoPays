@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.koin.compose.viewmodel)
     testImplementation(libs.koin.test)
 
+    implementation(libs.kotlinx.collections.immutable)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

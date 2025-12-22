@@ -18,7 +18,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             WhopaysTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    WhoPaysApp(modifier = Modifier.padding(innerPadding))
                     AppNavGraph(modifier = Modifier.padding(innerPadding))
                 }
             }

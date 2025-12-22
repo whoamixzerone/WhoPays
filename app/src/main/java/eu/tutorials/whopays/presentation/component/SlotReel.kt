@@ -4,11 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -68,7 +68,8 @@ fun SlotReel(
 
     Box(
         modifier = modifier
-            .size(100.dp, 150.dp)
+            .aspectRatio(2f / 3f)
+            .fillMaxWidth()
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
@@ -87,8 +88,10 @@ fun SlotReel(
                 .size(60.dp)
                 .shadow(elevation = 12.dp, shape = RoundedCornerShape(8.dp), clip = false)
                 .clip(RoundedCornerShape(8.dp))
-                .background(Brush.verticalGradient(
-                    listOf(Color(0xFF9AD0FF), Color(0xFF4A8CFF)))
+                .background(
+                    Brush.verticalGradient(
+                        listOf(Color(0xFF9AD0FF), Color(0xFF4A8CFF))
+                    )
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -111,7 +114,7 @@ fun SlotReel(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .padding(6.dp),
-                    fontSize = 42.sp,
+                    fontSize = 36.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
@@ -126,13 +129,19 @@ private fun SlotReelPreview() {
     val items = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
     val operations = listOf("+", "-", "*")
 
-    Scaffold { innerPadding ->
-        Row {
-            SlotReel(modifier = Modifier.padding(innerPadding), items = items, isSpinning = true)
-            Spacer(Modifier.weight(1f))
-            SlotReel(modifier = Modifier.padding(innerPadding), items = operations)
-            Spacer(Modifier.weight(1f))
-            SlotReel(modifier = Modifier.padding(innerPadding), items = items)
-        }
+    Row {
+        SlotReel(
+            modifier = Modifier.weight(1f),
+            items = items,
+            isSpinning = true
+        )
+        SlotReel(
+            modifier = Modifier.weight(1f),
+            items = operations
+        )
+        SlotReel(
+            modifier = Modifier.weight(1f),
+            items = items
+        )
     }
 }
