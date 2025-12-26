@@ -1,4 +1,4 @@
-package eu.tutorials.whopays.presentation.component
+package eu.tutorials.whopays.presentation.screen.round
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -6,18 +6,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,12 +25,10 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun RoundScreen(
+    uiState: RoundState,
     modifier: Modifier = Modifier,
-    onNavigateSlotMachine: (Int) -> Unit = {}
+    onAction: (RoundAction) -> Unit = {},
 ) {
-    var roundText by remember { mutableStateOf("") }
-    var round by remember { mutableStateOf(0) }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -40,21 +37,25 @@ fun RoundScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "참가 인원을 입력해주세요!", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+
         Spacer(Modifier.height(20.dp))
 
-        TextField(
-            value = roundText,
-            onValueChange = { input ->
-                val sanitized = input.filter { it.isDigit() }
-                roundText = sanitized
-                round = sanitized.toIntOrNull() ?: 0
-            },
+        OutlinedTextField(
+            value = uiState.roundText,
+            onValueChange = { onAction(RoundAction.InputRound(it)) },
+            label = { Text("참가자 수") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            shape = RoundedCornerShape(10.dp),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF71B1A1),
+                unfocusedBorderColor = Color(0xFFD9D9D9)
+            )
         )
+
         Spacer(Modifier.height(20.dp))
 
-        Button(onClick = { onNavigateSlotMachine(round) }) {
+        Button(onClick = { onAction(RoundAction.OnStartGameClick(uiState.round)) }) {
             Text("게임 시작!", fontSize = 24.sp, fontWeight = FontWeight.Bold)
         }
     }
@@ -64,6 +65,9 @@ fun RoundScreen(
 @Composable
 private fun RoundScreenPreview() {
     Scaffold { innerPadding ->
-        RoundScreen(modifier = Modifier.padding(innerPadding))
+        RoundScreen(
+            uiState = RoundState(),
+            modifier = Modifier.padding(innerPadding)
+        )
     }
 }
