@@ -62,8 +62,8 @@ fun SlotMachineScreen(
 
             Spacer(Modifier.height(40.dp))
             SpinButton(
-                isSpinning = uiState.isSpinning,
-                isEnabled = uiState.round <= uiState.totalRound,
+                stage = uiState.spinStage,
+                isEnabled = uiState.isButtonEnabled && uiState.round <= uiState.totalRound,
                 onAction = onAction
             )
 
@@ -100,8 +100,7 @@ private fun SlotMachineScreenPreview() {
             totalRound = 2,
             number1 = "5",
             operator = "+",
-            number2 = "3",
-            isSpinning = false
+            number2 = "3"
         ),
         numbers = numbers,
         operators = operators

@@ -18,7 +18,9 @@ class RoundViewModel : ViewModel() {
 
     fun onAction(action: RoundAction) {
         when (action) {
-            is RoundAction.OnStartGameClick -> emitEffect(RoundEffect.NavigateToSlotMachine(action.round))
+            is RoundAction.OnStartGameClick -> emitEffect(
+                RoundEffect.NavigateToSlotMachine(action.round)
+            )
             is RoundAction.InputRound -> setRound(action.roundText)
         }
     }

@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import eu.tutorials.whopays.presentation.screen.slotmachine.SlotMachineAction
 import eu.tutorials.whopays.presentation.screen.slotmachine.SlotMachineState
+import eu.tutorials.whopays.presentation.screen.slotmachine.SpinStage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun SlotMachineBox(
@@ -91,23 +91,28 @@ fun SlotMachineBox(
             ) {
                 SlotReel(
                     items = numbers,
-                    isSpinning = uiState.isSpinning,
+//                    isSpinning = uiState.isSpinning,
+                    isSpinning = uiState.spinStage == SpinStage.SPINNING_ALL,
                     modifier = Modifier.weight(1f),
-                    onCurrentValue = { onAction(SlotMachineAction.updateNumberOne(it)) }
+                    onCurrentValue = { onAction(SlotMachineAction.UpdateNumberOne(it)) }
                 )
 
                 SlotReel(
                     items = operators,
-                    isSpinning = uiState.isSpinning,
+//                    isSpinning = uiState.isSpinning,
+                    isSpinning = uiState.spinStage == SpinStage.SPINNING_ALL ||
+                            uiState.spinStage == SpinStage.STOPPED_1,
                     modifier = Modifier.weight(1f),
-                    onCurrentValue = { onAction(SlotMachineAction.updateOperator(it)) }
+                    onCurrentValue = { onAction(SlotMachineAction.UpdateOperator(it)) }
                 )
 
                 SlotReel(
-                    items = numbers.reversed().toPersistentList(),
-                    isSpinning = uiState.isSpinning,
+//                    items = numbers.reversed().toPersistentList(),
+                    items = numbers,
+//                    isSpinning = uiState.isSpinning,
+                    isSpinning = uiState.spinStage != SpinStage.IDLE,
                     modifier = Modifier.weight(1f),
-                    onCurrentValue = { onAction(SlotMachineAction.updateNumberTwo(it)) }
+                    onCurrentValue = { onAction(SlotMachineAction.UpdateNumberTwo(it)) }
                 )
             }
         }
@@ -142,8 +147,7 @@ private fun SlotMachineBoxPreview() {
             totalRound = 2,
             number1 = "5",
             operator = "+",
-            number2 = "3",
-            isSpinning = false
+            number2 = "3"
         ),
         numbers = numbers,
         operators = operators

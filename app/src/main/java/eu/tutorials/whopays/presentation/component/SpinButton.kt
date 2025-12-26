@@ -31,21 +31,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.tutorials.whopays.presentation.screen.slotmachine.SlotMachineAction
+import eu.tutorials.whopays.presentation.screen.slotmachine.SpinStage
 import kotlinx.coroutines.delay
 
 @Composable
 fun SpinButton(
+    stage: SpinStage,
     modifier: Modifier = Modifier,
-    isSpinning: Boolean = false,
     isEnabled: Boolean = false,
     onAction: (SlotMachineAction) -> Unit = {}
 ) {
+    val isAnySpinning = stage != SpinStage.IDLE
+
     var buttonPressed by remember { mutableStateOf(false) }
 
     val rotation by rememberInfiniteTransition("rotation")
         .animateFloat(
             initialValue = 0f,
-            targetValue = if (isSpinning) 360f else 0f,
+            targetValue = if (isAnySpinning) 360f else 0f,
             animationSpec = infiniteRepeatable(
                 animation = tween(500, easing = LinearEasing),
                 repeatMode = RepeatMode.Restart
@@ -61,14 +64,7 @@ fun SpinButton(
     }
 
     Button(
-        onClick = {
-            if (!isSpinning) {
-                onAction(SlotMachineAction.OnSpinClick)
-                buttonPressed = true
-            } else {
-                onAction(SlotMachineAction.OnStopClick)
-            }
-        },
+        onClick = { onAction(SlotMachineAction.OnSpinButtonClick) },
         modifier = modifier
             .fillMaxWidth()
             .scale(if (buttonPressed) 0.95f else 1f)
@@ -90,7 +86,12 @@ fun SpinButton(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = if (isSpinning) "STOP" else "SPIN",
+                text = when (stage) {
+                    SpinStage.IDLE -> "SPIN"
+                    SpinStage.SPINNING_ALL -> "STOP 1"
+                    SpinStage.STOPPED_1 -> "STOP 2"
+                    SpinStage.STOPPED_2 -> "STOP 3"
+                },
                 fontSize = 24.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold
@@ -108,6 +109,6 @@ fun SpinButton(
 @Composable
 private fun SpinButtonPreview() {
     SpinButton(
-        isSpinning = false
+        stage = SpinStage.IDLE
     )
 }

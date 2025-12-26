@@ -10,6 +10,7 @@ data class SlotMachineState(
     val number1: String = "0",
     val operator: String = "+",
     val number2: String = "0",
-    val isSpinning: Boolean = false,
+    val spinStage: SpinStage = SpinStage.IDLE,
+    val isButtonEnabled: Boolean = true,
     val history: ImmutableList<SlotResult> = persistentListOf()
 )
