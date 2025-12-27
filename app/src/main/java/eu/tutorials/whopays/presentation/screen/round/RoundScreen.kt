@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import eu.tutorials.whopays.presentation.component.AdMobBanner
 
 @Composable
 fun RoundScreen(
@@ -55,9 +56,16 @@ fun RoundScreen(
 
         Spacer(Modifier.height(20.dp))
 
-        Button(onClick = { onAction(RoundAction.OnStartGameClick(uiState.round)) }) {
+        Button(
+            onClick = { onAction(RoundAction.OnStartGameClick(uiState.round)) },
+            enabled = uiState.roundText.isNotEmpty()
+        ) {
             Text("게임 시작!", fontSize = 24.sp, fontWeight = FontWeight.Bold)
         }
+
+        Spacer(Modifier.height(20.dp))
+
+        AdMobBanner()
     }
 }
 

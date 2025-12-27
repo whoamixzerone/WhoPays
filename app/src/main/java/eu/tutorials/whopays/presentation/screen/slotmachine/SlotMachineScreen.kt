@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import eu.tutorials.whopays.presentation.component.AdMobBanner
 import eu.tutorials.whopays.presentation.component.RoundIndicator
 import eu.tutorials.whopays.presentation.component.SlotMachineBox
 import eu.tutorials.whopays.presentation.component.SpinButton
@@ -66,6 +67,9 @@ fun SlotMachineScreen(
                 isEnabled = uiState.isButtonEnabled && uiState.round <= uiState.totalRound,
                 onAction = onAction
             )
+
+            Spacer(Modifier.height(30.dp))
+            AdMobBanner()
 
             Spacer(Modifier.height(30.dp))
             Button(

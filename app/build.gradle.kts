@@ -1,8 +1,15 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+}
+
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) load(file.inputStream())
 }
 
 android {
@@ -15,15 +22,30 @@ android {
         applicationId = "eu.tutorials.whopays"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val bannerId = localProperties.getProperty("ADMOB_BANNER_ID") ?: ""
+    val interstitialId = localProperties.getProperty("ADMOB_INTERSTITIAL_ID") ?: ""
+    val appId = localProperties.getProperty("ADMOB_APP_ID") ?: ""
+
     buildTypes {
-        release {
+        debug {
             isMinifyEnabled = false
+            resValue("string", "admob_banner_id", "ca-app-pub-3940256099942544/6300978111")
+            resValue("string", "admob_interstitial_id", "ca-app-pub-3940256099942544/1033173712")
+            manifestPlaceholders["adMobAppId"] = "ca-app-pub-3940256099942544~3347511713"
+        }
+        release {
+            manifestPlaceholders += mapOf()
+            isMinifyEnabled = true
+            isShrinkResources = true
+            resValue("string", "admob_banner_id", bannerId)
+            resValue("string", "admob_interstitial_id", interstitialId)
+            manifestPlaceholders["adMobAppId"] = appId
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -55,6 +77,7 @@ dependencies {
     testImplementation(libs.koin.test)
 
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.google.ads)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
