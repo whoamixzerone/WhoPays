@@ -4,7 +4,9 @@
 ---
 ## 📸 Screenshots & Demo
 
-
+<img width="320" height="650" alt="Screenshot_20260106_162040" src="https://github.com/user-attachments/assets/8781a8d4-a45a-4d79-81ef-335a0d91a4f7" />
+<img width="320" height="650" alt="Screenshot_20260106_162100" src="https://github.com/user-attachments/assets/d5179180-f5af-4816-ad1d-c7c7c0d102e6" />
+<img width="320" height="650" alt="Screenshot_20260106_162139" src="https://github.com/user-attachments/assets/f5f323dc-367f-422f-b465-25592a956501" />
 
 ---
 ## 🛠 Tech Stacks
