@@ -2,7 +2,7 @@ package eu.tutorials.whopays.presentation.screen.slotmachine
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import eu.tutorials.whopays.data.model.SlotResult
+import eu.tutorials.whopays.domain.model.SlotResult
 import eu.tutorials.whopays.presentation.screen.slotmachine.SlotMachineEffect.NavigationToResult
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay

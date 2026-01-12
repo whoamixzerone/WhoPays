@@ -1,4 +1,4 @@
-package eu.tutorials.whopays.data.model
+package eu.tutorials.whopays.domain.model
 
 import kotlinx.serialization.Serializable
 

@@ -1,6 +1,6 @@
 package eu.tutorials.whopays.presentation.screen.slotmachine
 
-import eu.tutorials.whopays.data.model.SlotResult
+import eu.tutorials.whopays.domain.model.SlotResult
 import kotlinx.collections.immutable.ImmutableList
 
 sealed interface SlotMachineEffect {

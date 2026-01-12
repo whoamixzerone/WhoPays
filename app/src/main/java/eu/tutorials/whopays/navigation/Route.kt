@@ -1,7 +1,7 @@
 package eu.tutorials.whopays.navigation
 
 import androidx.navigation3.runtime.NavKey
-import eu.tutorials.whopays.data.model.SlotResult
+import eu.tutorials.whopays.domain.model.SlotResult
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.serialization.Serializable
 
